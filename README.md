@@ -1,11 +1,9 @@
-<img src="./.github/screenshots/header.png#gh-light-mode-only" width="100%" alt="Header light mode"/>
-<img src="./.github/screenshots/header-dark.png#gh-dark-mode-only" width="100%" alt="Header dark mode"/>
+# Mars AI Help
 
-___
+Customer communication platform by Mars AI Technology Solutions.
+Built on [Chatwoot](https://www.chatwoot.com) (open-source, MIT license).
 
-# Chatwoot
-
-The modern customer support platform, an open-source alternative to Intercom, Zendesk, Salesforce Service Cloud etc.
+**Live:** https://help.marsai.co.uk
 
 <p>
   <img src="https://img.shields.io/circleci/build/github/chatwoot/chatwoot" alt="CircleCI Badge">
