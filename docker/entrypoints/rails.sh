@@ -20,6 +20,9 @@ done
 
 echo "Database ready to accept connections."
 
+# Force-update branding config from installation_config.yml (marsai rebrand)
+bundle exec rails runner "ConfigLoader.new.process(reconcile_only_new: false)" 2>/dev/null || true
+
 #install missing gems for local dev as we are using base image compiled for production
 bundle install
 
