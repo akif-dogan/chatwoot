@@ -21,6 +21,19 @@ services:
     entrypoint: docker/entrypoints/rails.sh
     command: ['bundle', 'exec', 'rails', 's', '-p', '3000', '-b', '0.0.0.0']
     restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.chatwoot-http.entryPoints=http
+      - "traefik.http.routers.chatwoot-http.rule=Host(`help.marsai.co.uk`) && PathPrefix(`/`)"
+      - traefik.http.routers.chatwoot-http.middlewares=redirect-to-https
+      - traefik.http.routers.chatwoot-https.entryPoints=https
+      - "traefik.http.routers.chatwoot-https.rule=Host(`help.marsai.co.uk`) && PathPrefix(`/`)"
+      - traefik.http.routers.chatwoot-https.tls=true
+      - traefik.http.routers.chatwoot-https.tls.certresolver=letsencrypt
+      - traefik.http.routers.chatwoot-https.middlewares=gzip
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.services.chatwoot-rails.loadbalancer.server.port=3000
 
   sidekiq:
     <<: *base
