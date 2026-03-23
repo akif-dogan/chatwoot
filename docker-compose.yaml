@@ -2,7 +2,10 @@ version: '3'
 
 services:
   base: &base
-    image: chatwoot/chatwoot:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: marsai-chatwoot:latest
     env_file: .env
     volumes:
       - storage_data:/app/storage
