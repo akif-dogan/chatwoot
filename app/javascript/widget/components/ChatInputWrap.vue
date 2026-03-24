@@ -45,8 +45,9 @@ export default {
       userInput: '',
       showEmojiPicker: false,
       isFocused: false,
-      showLinkInput: false,
-      linkUrl: '',
+      showUrlInput: false,
+      urlValue: '',
+      urlMode: 'link', // 'link' or 'figma'
     };
   },
 
@@ -124,46 +125,47 @@ export default {
     focusInput() {
       this.$refs.chatInput.focus();
     },
-    insertLink() {
-      if (this.showLinkInput && this.linkUrl.trim()) {
-        const url = this.linkUrl.trim();
-        this.userInput = `${this.userInput}[link](${url})`;
-        this.linkUrl = '';
-        this.showLinkInput = false;
-        this.focusInput();
-      } else {
-        this.showLinkInput = !this.showLinkInput;
-        if (this.showLinkInput) {
-          this.$nextTick(() => {
-            const el = this.$refs.linkInput;
-            if (el) el.focus();
-          });
-        }
+    openUrlInput(mode) {
+      if (this.showUrlInput && this.urlMode === mode && this.urlValue.trim()) {
+        this.submitUrl();
+        return;
       }
+      this.urlMode = mode;
+      this.urlValue = '';
+      this.showUrlInput = true;
+      this.$nextTick(() => {
+        const el = this.$refs.urlInput;
+        if (el) el.focus();
+      });
     },
-    cancelLink() {
-      this.showLinkInput = false;
-      this.linkUrl = '';
+    submitUrl() {
+      const url = this.urlValue.trim();
+      if (!url) return;
+      if (this.urlMode === 'figma') {
+        this.userInput = `${this.userInput}[Figma Design](${url})`;
+      } else {
+        this.userInput = `${this.userInput}[link](${url})`;
+      }
+      this.urlValue = '';
+      this.showUrlInput = false;
       this.focusInput();
     },
-    handleLinkKeydown(e) {
+    cancelUrl() {
+      this.showUrlInput = false;
+      this.urlValue = '';
+      this.focusInput();
+    },
+    handleUrlKeydown(e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        this.insertLink();
+        this.submitUrl();
       } else if (e.key === 'Escape') {
-        this.cancelLink();
+        this.cancelUrl();
       }
     },
     insertCodeBlock() {
       this.userInput = `${this.userInput}\n\`\`\`\n\n\`\`\``;
       this.focusInput();
-    },
-    insertFigmaLink() {
-      const url = prompt('Figma URL:');
-      if (url && url.trim()) {
-        this.userInput = `${this.userInput}[Figma Design](${url.trim()})`;
-        this.focusInput();
-      }
     },
   },
 };
@@ -195,20 +197,21 @@ export default {
       />
     </div>
 
-    <!-- Link URL input (expandable) -->
-    <div v-if="showLinkInput" class="flex items-center gap-2 px-4 pb-2">
+    <!-- URL input (expandable — used for both Link and Figma) -->
+    <div v-if="showUrlInput" class="flex items-center gap-2 px-4 pb-2">
+      <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wide">{{ urlMode === 'figma' ? 'Figma' : 'Link' }}</span>
       <input
-        ref="linkInput"
-        v-model="linkUrl"
+        ref="urlInput"
+        v-model="urlValue"
         type="url"
-        placeholder="https://..."
+        :placeholder="urlMode === 'figma' ? 'https://figma.com/...' : 'https://...'"
         class="flex-1 reset-base text-xs px-2.5 py-1.5 rounded-lg bg-n-slate-3 dark:bg-zinc-800 text-n-slate-12 outline-none border border-n-weak dark:border-zinc-700/50 focus:border-indigo-500/50"
-        @keydown="handleLinkKeydown"
+        @keydown="handleUrlKeydown"
       />
-      <button class="text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1" @click="insertLink">
+      <button class="text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1" @click="submitUrl">
         Add
       </button>
-      <button class="text-xs text-zinc-500 hover:text-zinc-300 px-1 py-1" @click="cancelLink">
+      <button class="text-xs text-zinc-500 hover:text-zinc-300 px-1 py-1" @click="cancelUrl">
         &times;
       </button>
     </div>
@@ -229,7 +232,7 @@ export default {
             <button
               class="marsai-action-btn marsai-action-btn--red"
               title="Web link"
-              @click="insertLink"
+              @click="openUrlInput('link')"
             >
               <FluentIcon icon="link" size="15" />
             </button>
@@ -245,7 +248,7 @@ export default {
             <button
               class="marsai-action-btn marsai-action-btn--purple"
               title="Design file"
-              @click="insertFigmaLink"
+              @click="openUrlInput('figma')"
             >
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.354-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.015-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117v-6.038H8.148zm7.704 0c-2.476 0-4.49 2.015-4.49 4.49s2.014 4.49 4.49 4.49 4.49-2.015 4.49-4.49-2.014-4.49-4.49-4.49zm0 7.509c-1.665 0-3.019-1.355-3.019-3.019s1.355-3.019 3.019-3.019 3.019 1.354 3.019 3.019-1.354 3.019-3.019 3.019zM8.148 24c-2.476 0-4.49-2.015-4.49-4.49s2.014-4.49 4.49-4.49h4.588V24H8.148zm3.117-1.471V16.49H8.148c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.02 3.019 3.02h3.117z" />
