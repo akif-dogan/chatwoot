@@ -276,5 +276,22 @@ By default, it renders:
   </script>
   <% if @portal.channel_web_widget.present? && !@is_plain_layout_enabled %>
   <%= @portal.channel_web_widget.web_widget_script.html_safe %>
+  <% elsif !@is_plain_layout_enabled %>
+  <%# Mars AI widget — fallback when portal is not linked to inbox via DB %>
+  <script>
+    (function(d,t) {
+      var BASE_URL="<%= ENV.fetch('FRONTEND_URL', '') %>";
+      var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=BASE_URL+"/packs/js/sdk.js";
+      g.async = true;
+      s.parentNode.insertBefore(g,s);
+      g.onload=function(){
+        window.chatwootSDK.run({
+          websiteToken: 'jYRfsbUDzjWcwf2Gcta2dpDm',
+          baseUrl: BASE_URL
+        })
+      }
+    })(document,"script");
+  </script>
   <% end %>
 </html>
