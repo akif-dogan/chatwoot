@@ -59,6 +59,9 @@ export default {
     showSendButton() {
       return this.userInput.length > 0;
     },
+    charCount() {
+      return this.userInput.length;
+    },
   },
   watch: {
     isWidgetOpen(isWidgetOpen) {
@@ -168,15 +171,15 @@ export default {
 
 <template>
   <div
-    class="flex flex-col rounded-[7px] transition-all duration-200 bg-n-background !shadow-[0_0_0_1px,0_0_2px_3px]"
+    class="flex flex-col rounded-2xl transition-all duration-200 bg-n-background dark:bg-zinc-900/80"
     :class="{
-      '!shadow-[var(--marsai-indigo,#6366F1)]': isFocused,
-      '!shadow-n-strong dark:!shadow-n-strong': !isFocused,
+      'ring-1 ring-indigo-500/50 shadow-[0_0_12px_rgba(99,102,241,0.15)]': isFocused,
+      'ring-1 ring-n-weak dark:ring-zinc-700/50': !isFocused,
     }"
     @keydown.esc="hideEmojiPicker"
   >
-    <!-- Textarea row -->
-    <div class="flex items-center ltr:pl-3 rtl:pr-3 ltr:pr-2 rtl:pl-2">
+    <!-- Textarea -->
+    <div class="px-4 pt-1">
       <ResizableTextArea
         id="chat-input"
         ref="chatInput"
@@ -193,87 +196,112 @@ export default {
     </div>
 
     <!-- Link URL input (expandable) -->
-    <div v-if="showLinkInput" class="flex items-center gap-2 px-3 pb-2">
+    <div v-if="showLinkInput" class="flex items-center gap-2 px-4 pb-2">
       <input
         ref="linkInput"
         v-model="linkUrl"
         type="url"
         placeholder="https://..."
-        class="flex-1 reset-base text-sm px-2 py-1 rounded-lg bg-n-slate-3 dark:bg-n-alpha-2 text-n-slate-12 outline-none border border-n-weak focus:border-[#6366F1]"
+        class="flex-1 reset-base text-xs px-2.5 py-1.5 rounded-lg bg-n-slate-3 dark:bg-zinc-800 text-n-slate-12 outline-none border border-n-weak dark:border-zinc-700/50 focus:border-indigo-500/50"
         @keydown="handleLinkKeydown"
       />
-      <button class="marsai-toolbar-btn text-xs" @click="insertLink">
+      <button class="text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1" @click="insertLink">
         Add
       </button>
-      <button class="marsai-toolbar-btn text-xs" @click="cancelLink">
+      <button class="text-xs text-zinc-500 hover:text-zinc-300 px-1 py-1" @click="cancelLink">
         &times;
       </button>
     </div>
 
-    <!-- Toolbar row -->
-    <div
-      class="flex items-center justify-between px-2 pb-1.5 pt-0"
-    >
-      <!-- Left: action buttons -->
-      <div class="flex items-center gap-0.5">
-        <ChatAttachmentButton
-          v-if="canHandleAttachments"
-          class="marsai-toolbar-btn"
-          :on-attach="onSendAttachment"
-        />
-        <button
-          class="marsai-toolbar-btn"
-          title="Insert link"
-          @click="insertLink"
-        >
-          <FluentIcon icon="link" size="14" />
-        </button>
-        <button
-          class="marsai-toolbar-btn"
-          title="Insert code block"
-          @click="insertCodeBlock"
-        >
-          <FluentIcon icon="code" size="14" />
-        </button>
-        <button
-          class="marsai-toolbar-btn"
-          title="Insert Figma link"
-          @click="insertFigmaLink"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5ZM12 2h3.5a3.5 3.5 0 1 1 0 7H12V2Zm0 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Zm-7 0A3.5 3.5 0 0 1 8.5 11H12v3.5a3.5 3.5 0 1 1-7 0ZM5 5.5A3.5 3.5 0 0 0 8.5 9H12V5.5h-.01A3.49 3.49 0 0 0 8.5 2 3.5 3.5 0 0 0 5 5.5Z"/>
-          </svg>
-        </button>
-      </div>
-      <!-- Right: emoji + send -->
-      <div class="flex items-center">
-        <button
-          v-if="shouldShowEmojiPicker && hasEmojiPickerEnabled"
-          class="marsai-toolbar-btn"
-          :aria-label="$t('EMOJI.ARIA_LABEL')"
-          @click="toggleEmojiPicker"
-        >
-          <FluentIcon
-            icon="emoji"
-            size="14"
-            class="transition-all duration-150"
-            :class="{
-              'text-n-slate-12': !showEmojiPicker,
-              'text-[#6366F1]': showEmojiPicker,
-            }"
+    <!-- Controls Section -->
+    <div class="px-3 pb-3">
+      <div class="flex items-center justify-between">
+        <!-- Left: Attachment group -->
+        <div class="flex items-center gap-2">
+          <div class="marsai-btn-group flex items-center gap-0.5 p-0.5 rounded-xl">
+            <!-- File Upload -->
+            <ChatAttachmentButton
+              v-if="canHandleAttachments"
+              class="marsai-action-btn marsai-action-btn--default"
+              :on-attach="onSendAttachment"
+            />
+            <!-- Link -->
+            <button
+              class="marsai-action-btn marsai-action-btn--red"
+              title="Web link"
+              @click="insertLink"
+            >
+              <FluentIcon icon="link" size="15" />
+            </button>
+            <!-- Code -->
+            <button
+              class="marsai-action-btn marsai-action-btn--green"
+              title="Code block"
+              @click="insertCodeBlock"
+            >
+              <FluentIcon icon="code" size="15" />
+            </button>
+            <!-- Figma -->
+            <button
+              class="marsai-action-btn marsai-action-btn--purple"
+              title="Design file"
+              @click="insertFigmaLink"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.354-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.015-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117v-6.038H8.148zm7.704 0c-2.476 0-4.49 2.015-4.49 4.49s2.014 4.49 4.49 4.49 4.49-2.015 4.49-4.49-2.014-4.49-4.49-4.49zm0 7.509c-1.665 0-3.019-1.355-3.019-3.019s1.355-3.019 3.019-3.019 3.019 1.354 3.019 3.019-1.354 3.019-3.019 3.019zM8.148 24c-2.476 0-4.49-2.015-4.49-4.49s2.014-4.49 4.49-4.49h4.588V24H8.148zm3.117-1.471V16.49H8.148c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.02 3.019 3.02h3.117z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Emoji (separate) -->
+          <button
+            v-if="shouldShowEmojiPicker && hasEmojiPickerEnabled"
+            class="marsai-action-btn marsai-action-btn--default marsai-action-btn--separate"
+            :aria-label="$t('EMOJI.ARIA_LABEL')"
+            @click="toggleEmojiPicker"
+          >
+            <FluentIcon
+              icon="emoji"
+              size="15"
+              class="transition-all duration-150"
+              :class="{
+                '': !showEmojiPicker,
+                'text-indigo-400': showEmojiPicker,
+              }"
+            />
+          </button>
+          <EmojiInput
+            v-if="shouldShowEmojiPicker && showEmojiPicker"
+            v-on-clickaway="hideEmojiPicker"
+            :on-click="emojiOnClick"
+            @keydown.esc="hideEmojiPicker"
           />
-        </button>
-        <EmojiInput
-          v-if="shouldShowEmojiPicker && showEmojiPicker"
-          v-on-clickaway="hideEmojiPicker"
-          :on-click="emojiOnClick"
-          @keydown.esc="hideEmojiPicker"
-        />
-        <ChatSendButton
-          v-if="showSendButton"
-          :color="'#6366F1'"
-          @click="handleButtonClick"
-        />
+        </div>
+
+        <!-- Right: char count + send -->
+        <div class="flex items-center gap-2.5">
+          <div class="text-[10px] font-medium text-zinc-500 dark:text-zinc-500 tabular-nums">
+            {{ charCount }}/2000
+          </div>
+          <ChatSendButton
+            v-if="showSendButton"
+            @click="handleButtonClick"
+          />
+        </div>
+      </div>
+
+      <!-- Footer info -->
+      <div class="flex items-center justify-between mt-2 pt-2 border-t border-n-weak dark:border-zinc-800/50 text-[10px] text-zinc-500 dark:text-zinc-500">
+        <div class="flex items-center gap-1.5">
+          <FluentIcon icon="info" size="11" />
+          <span>
+            Press <kbd class="px-1 py-0.5 bg-n-slate-3 dark:bg-zinc-800 border border-n-weak dark:border-zinc-600 rounded text-zinc-400 font-mono text-[9px]">Shift+Enter</kbd> for new line
+          </span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 bg-green-500 rounded-full" />
+          <span>Online</span>
+        </div>
       </div>
     </div>
   </div>
@@ -285,6 +313,44 @@ export default {
 }
 
 .user-message-input {
-  @apply border-none outline-none w-full placeholder:text-n-slate-10 resize-none h-8 min-h-8 max-h-60 py-1 px-0 my-2 bg-n-background text-n-slate-12 transition-all duration-200;
+  @apply border-none outline-none w-full placeholder:text-n-slate-10 resize-none h-8 min-h-8 max-h-60 py-1 px-0 my-2 bg-transparent text-n-slate-12 transition-all duration-200 text-sm leading-relaxed;
 }
+
+/* Button group container */
+.marsai-btn-group {
+  background: rgba(39, 39, 42, 0.08);
+  border: 1px solid rgba(63, 63, 70, 0.12);
+}
+.dark .marsai-btn-group {
+  background: rgba(39, 39, 42, 0.4);
+  border-color: rgba(63, 63, 70, 0.5);
+}
+
+/* Action buttons base */
+.marsai-action-btn {
+  @apply relative p-2 bg-transparent border-none rounded-lg cursor-pointer transition-all duration-300;
+  color: #71717A;
+}
+.marsai-action-btn:hover {
+  @apply scale-105;
+  background: rgba(39, 39, 42, 0.15);
+}
+.dark .marsai-action-btn:hover {
+  background: rgba(39, 39, 42, 0.8);
+}
+
+/* Separate button (outside group) */
+.marsai-action-btn--separate {
+  border: 1px solid rgba(63, 63, 70, 0.12);
+  border-radius: 0.5rem;
+}
+.dark .marsai-action-btn--separate {
+  border-color: rgba(63, 63, 70, 0.3);
+}
+
+/* Per-button hover colors */
+.marsai-action-btn--default:hover { color: #D4D4D8; }
+.marsai-action-btn--red:hover { color: #F87171; }
+.marsai-action-btn--green:hover { color: #4ADE80; }
+.marsai-action-btn--purple:hover { color: #C084FC; }
 </style>

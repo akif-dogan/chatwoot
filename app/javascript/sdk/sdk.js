@@ -51,9 +51,9 @@ export const SDK_CSS = `
 }
 
 .woot-widget-bubble {
-  background: linear-gradient(135deg, #6366F1, #A855F7);
+  background: linear-gradient(135deg, rgba(99,102,241,0.8), rgba(168,85,247,0.8));
   border-radius: 100px;
-  border-width: 0px;
+  border: 2px solid rgba(255,255,255,0.2);
   bottom: 20px;
   box-shadow: 0 0 20px rgba(139,92,246,0.7), 0 0 40px rgba(124,58,237,0.5), 0 0 60px rgba(109,40,217,0.3) !important;
   cursor: pointer;
@@ -63,8 +63,9 @@ export const SDK_CSS = `
   user-select: none;
   width: 64px;
   z-index: 2147483000 !important;
-  overflow: hidden;
+  overflow: visible;
 }
+/* Bubble glow handled via box-shadow animation */
 
 .woot-widget-bubble.woot-widget-bubble--flat {
   border-radius: 0;
@@ -99,19 +100,8 @@ export const SDK_CSS = `
   top: 0px;
   right: 0px;
   border: 2px solid rgba(255,255,255,0.9);
+  z-index: 10;
   animation: marsaiGlowPing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-.woot-widget-bubble.unread-notification::before {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: #EF4444;
-  border-radius: 100%;
-  top: 0px;
-  right: 0px;
-  border: 2px solid rgba(255,255,255,0.9);
-  z-index: 1;
 }
 
 .woot-widget-bubble.woot-widget--expanded {
@@ -305,8 +295,9 @@ export const SDK_CSS = `
 
 @media only screen and (min-width: 667px) {
   .woot-widget-holder {
-    border-radius: 20px;
+    border-radius: 24px;
     bottom: 104px;
+    border: 1px solid rgba(113,113,122,0.3);
     height: calc(90% - 64px - 20px);
     max-height: 640px !important;
     min-height: 250px !important;
