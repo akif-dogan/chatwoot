@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('CW_API_ONLY_SERVER', false))
     root to: 'api#index'
   else
-    root to: 'dashboard#index'
+    # Mars AI: redirect root to custom help center
+    root to: redirect('/help/')
+
 
     get '/app', to: 'dashboard#index'
     get '/app/*params', to: 'dashboard#index'
