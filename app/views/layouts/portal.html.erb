@@ -108,20 +108,28 @@ By default, it renders:
     --dynamic-hover-bg-color: <%= generate_portal_hover_color(@portal.color , 'light') %>;
   }
 
+  /* ===== Mars AI Help Center — Custom Theme ===== */
+
+  /* Fonts */
+  body, #portal {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif !important;
+  }
+  .marsai-hero-title {
+    font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif !important;
+  }
+
   /* Portal background */
   #portal-bg {
     background: var(--dynamic-portal-bg);
   }
-  /* Portal background gradient */
   #portal-bg-gradient {
     background-image: var(--dynamic-portal-bg-gradient);
   }
-  /* Category block item hover color */
   #category-item:hover {
     background-color: var(--dynamic-hover-bg-color);
   }
 
-  /* Header section */
+  /* Header */
   #header-action-button:hover,
   #toggle-appearance:hover,
   #toggle-theme-button:hover {
@@ -131,8 +139,120 @@ By default, it renders:
   #category-block:hover {
     border-color: var(--dynamic-hover-color);
   }
-  #category-block:hover #category-name  {
+  #category-block:hover #category-name {
     color: var(--dynamic-hover-color);
+  }
+
+  /* ===== Hero Section ===== */
+  .marsai-hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 40%, #3b82f6 70%, #60a5fa 100%);
+  }
+  html.dark .marsai-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #1d4ed8 80%, #2563eb 100%);
+  }
+
+  .marsai-hero-pattern {
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 60%);
+  }
+  .marsai-hero-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.6;
+  }
+
+  .marsai-hero-title {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .marsai-hero-subtitle {
+    color: rgba(255,255,255,0.85);
+  }
+  .marsai-hero-badge {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #ffffff;
+  }
+  .marsai-hero-stats {
+    color: #ffffff;
+  }
+  .marsai-hero-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255,255,255,0.25);
+  }
+
+  /* Pulsing dot animation */
+  .marsai-pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+    animation: marsai-pulse 2s infinite;
+  }
+  @keyframes marsai-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
+
+  /* ===== Category Cards ===== */
+  #category-block {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+  }
+  #category-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(37, 99, 235, 0.12), 0 4px 10px -3px rgba(0,0,0,0.05);
+  }
+  html.dark #category-block:hover {
+    box-shadow: 0 8px 25px -5px rgba(37, 99, 235, 0.2), 0 4px 10px -3px rgba(0,0,0,0.3);
+  }
+
+  /* ===== Search Styling ===== */
+  #search-wrap input {
+    border-radius: 12px !important;
+    padding: 14px 20px 14px 48px !important;
+    font-size: 16px !important;
+    background: rgba(255,255,255,0.95) !important;
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+  }
+  #search-wrap input:focus {
+    background: #ffffff !important;
+    border-color: rgba(37, 99, 235, 0.5) !important;
+    box-shadow: 0 4px 30px rgba(37, 99, 235, 0.15) !important;
+  }
+  html.dark #search-wrap input {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #e2e8f0 !important;
+  }
+  html.dark #search-wrap input:focus {
+    background: rgba(30, 41, 59, 1) !important;
+    border-color: rgba(96, 165, 250, 0.5) !important;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    border-top: 1px solid rgba(148,163,184,0.15);
+  }
+
+  /* ===== Smooth page load ===== */
+  #portal {
+    animation: marsai-fadeIn 0.4s ease-out;
+  }
+  @keyframes marsai-fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   </style>
 

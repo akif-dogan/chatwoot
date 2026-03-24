@@ -2,6 +2,9 @@
 <% content_for :head do %>
   <title><%= @portal.display_title %></title>
   <meta name="title" content="<%= @portal.display_title %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <% if @og_image_url.present? %>
     <meta name="twitter:card" content="summary_large_image">
@@ -10,15 +13,37 @@
     <meta name="twitter:image" content="<%= @og_image_url.html_safe %>">
   <% end %>
 <% end %>
-<section id="portal-bg" class="w-full bg-white dark:bg-slate-900 shadow-inner">
-  <div id="portal-bg-gradient" class="pt-8 pb-8 md:pt-14 md:pb-6 min-h-[240px] md:min-h-[260px]">
-    <div class="mx-auto max-w-5xl px-4 md:px-8 flex flex-col items-start">
-       <span class="text-sm leading-[24px] font-semibold text-slate-600 dark:text-slate-300 mb-1 <%= @portal.logo.present? ? 'block lg:hidden' : 'hidden' %>"><%= @portal.name %></span>
-      <h1 class="text-2xl md:text-4xl text-slate-900 dark:text-white font-semibold leading-normal">
-        <%= portal.header_text %>
+<section id="portal-bg" class="marsai-hero w-full relative overflow-hidden">
+  <div class="marsai-hero-pattern absolute inset-0 pointer-events-none"></div>
+  <div id="portal-bg-gradient" class="relative pt-12 pb-10 md:pt-20 md:pb-14 min-h-[280px] md:min-h-[340px]">
+    <div class="mx-auto max-w-5xl px-4 md:px-8 flex flex-col items-center text-center">
+      <div class="marsai-hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6">
+        <span class="marsai-pulse-dot"></span>
+        <span class="text-xs font-semibold tracking-wide uppercase">AI-Powered Support</span>
+      </div>
+      <h1 class="marsai-hero-title text-3xl md:text-5xl font-extrabold leading-tight tracking-tight mb-4">
+        <%= portal.header_text.presence || "How can we help you?" %>
       </h1>
-      <p class="text-slate-600 dark:text-slate-200 text-start text-lg leading-normal pt-2 pb-4"><%= I18n.t('public_portal.hero.sub_title') %></p>
-      <div id="search-wrap" class="w-full"></div>
+      <p class="marsai-hero-subtitle text-lg md:text-xl leading-relaxed max-w-2xl mb-8">
+        Search our knowledge base or start a conversation — our AI assistant responds instantly.
+      </p>
+      <div id="search-wrap" class="w-full max-w-2xl"></div>
+      <div class="marsai-hero-stats flex items-center gap-8 mt-8">
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold">24/7</span>
+          <span class="text-xs opacity-70 mt-0.5">AI Support</span>
+        </div>
+        <div class="marsai-hero-divider"></div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold">&lt;2min</span>
+          <span class="text-xs opacity-70 mt-0.5">Response Time</span>
+        </div>
+        <div class="marsai-hero-divider"></div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold">13+</span>
+          <span class="text-xs opacity-70 mt-0.5">Help Articles</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
