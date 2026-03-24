@@ -25,7 +25,7 @@ const onBackButtonClick = () => {
 </script>
 
 <template>
-  <header class="flex justify-between w-full px-5 py-4 gap-2" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
+  <header class="flex justify-between w-full px-5 py-4 gap-2" style="background: linear-gradient(135deg, #6366F1, #A855F7);">
     <div class="flex items-center">
       <button
         v-if="showBackButton"
@@ -47,7 +47,7 @@ const onBackButtonClick = () => {
           <span v-dompurify-html="title" class="ltr:mr-1 rtl:ml-1" />
           <div
             :class="`h-2 w-2 rounded-full
-              ${isOnline ? 'bg-emerald-400 animate-pulse' : 'hidden'}`"
+              ${isOnline ? 'bg-emerald-400 marsai-status-glow' : 'hidden'}`"
           />
         </div>
         <AvailabilityContainer

@@ -2,10 +2,22 @@ export const SDK_CSS = `
 :root {
   --b-100: #F2F3F7;
   --s-700: #37546D;
+  --marsai-indigo: #6366F1;
+  --marsai-purple: #A855F7;
+}
+
+@keyframes marsaiGlowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes marsaiGlowPing {
+  0% { transform: scale(1); opacity: 1; }
+  75%, 100% { transform: scale(1.4); opacity: 0; }
 }
 
 .woot-widget-holder {
-  box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+  box-shadow: 0 0 20px rgba(99,102,241,0.15), 0 0 40px rgba(168,85,247,0.1), 0 5px 40px rgba(0,0,0,0.16);
   opacity: 1;
   will-change: transform, opacity;
   transform: translateY(0);
@@ -39,11 +51,11 @@ export const SDK_CSS = `
 }
 
 .woot-widget-bubble {
-  background: #1f93ff;
+  background: linear-gradient(135deg, #6366F1, #A855F7);
   border-radius: 100px;
   border-width: 0px;
   bottom: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .16) !important;
+  box-shadow: 0 0 20px rgba(139,92,246,0.7), 0 0 40px rgba(124,58,237,0.5), 0 0 60px rgba(109,40,217,0.3) !important;
   cursor: pointer;
   height: 64px;
   padding: 0px;
@@ -82,12 +94,24 @@ export const SDK_CSS = `
   position: absolute;
   width: 12px;
   height: 12px;
-  background: #ff4040;
+  background: #EF4444;
   border-radius: 100%;
   top: 0px;
   right: 0px;
-  border: 2px solid #ffffff;
-  transition: background 0.2s ease;
+  border: 2px solid rgba(255,255,255,0.9);
+  animation: marsaiGlowPing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.woot-widget-bubble.unread-notification::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #EF4444;
+  border-radius: 100%;
+  top: 0px;
+  right: 0px;
+  border: 2px solid rgba(255,255,255,0.9);
+  z-index: 1;
 }
 
 .woot-widget-bubble.woot-widget--expanded {
@@ -129,8 +153,9 @@ export const SDK_CSS = `
 }
 
 .woot-widget-bubble:hover {
-  background: #1f93ff;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, .4) !important;
+  background: linear-gradient(135deg, #6366F1, #A855F7);
+  box-shadow: 0 0 30px rgba(139,92,246,0.9), 0 0 50px rgba(124,58,237,0.7), 0 0 70px rgba(109,40,217,0.5) !important;
+  transform: scale(1.05);
 }
 
 .woot-widget-bubble svg {
@@ -280,7 +305,7 @@ export const SDK_CSS = `
 
 @media only screen and (min-width: 667px) {
   .woot-widget-holder {
-    border-radius: 16px;
+    border-radius: 20px;
     bottom: 104px;
     height: calc(90% - 64px - 20px);
     max-height: 640px !important;

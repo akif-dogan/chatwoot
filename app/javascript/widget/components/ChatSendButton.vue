@@ -18,7 +18,7 @@ export default {
     },
     color: {
       type: String,
-      default: '#6e6f73',
+      default: '#6366F1',
     },
   },
 };
@@ -28,7 +28,7 @@ export default {
   <button
     type="submit"
     :disabled="disabled"
-    class="min-h-8 min-w-8 flex items-center justify-center ml-1"
+    class="marsai-send-btn min-h-8 min-w-8 flex items-center justify-center ml-1"
   >
     <FluentIcon v-if="!loading" icon="send" :style="`color: ${color}`" />
     <Spinner v-else size="small" />
