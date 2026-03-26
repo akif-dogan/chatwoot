@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
+2:I[75438,["/help/_next/static/chunks/0l0creu6j8l2r.js","/help/_next/static/chunks/0d3shmwh5_nmn.js","/help/_next/static/chunks/13d9gjzx35q6x.js"],"ArticlePageClient"]
 3:I[97367,["/help/_next/static/chunks/0l0creu6j8l2r.js","/help/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":["$L2",[["$","script","script-0",{"src":"/help/_next/static/chunks/00dp3g_h4e~bk.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"gQcavLebLmJkwh8qJmt1N"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"slug":"software-development"}],[["$","script","script-0",{"src":"/help/_next/static/chunks/13d9gjzx35q6x.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"OuT6zdmoO0YtPmKrLXEJQ"}
 5:null
-2:E{"digest":"NEXT_HTTP_ERROR_FALLBACK;404"}
