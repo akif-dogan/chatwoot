@@ -1,3 +1,7 @@
+# Sirlar bilerek burada DEGIL: bu depo public. POSTGRES_PASSWORD ve
+# REDIS_PASSWORD degerleri Coolify ortam degiskenlerinden gelir (app 33/20).
+# Eski duz-metin degerler a870620 (2026-03-23) - 2026-08-26 arasi acikta
+# durdu; ikisi de yenilendi.
 version: '3'
 
 services:
@@ -47,12 +51,12 @@ services:
     environment:
       - POSTGRES_DB=chatwoot
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=marsai_chatwoot_2026
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   redis:
     image: redis:alpine
     restart: always
-    command: ["sh", "-c", "redis-server --requirepass marsai_chatwoot_redis"]
+    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     volumes:
       - chatwoot_redis:/data
 
